@@ -1,15 +1,15 @@
 from setuptools import setup, find_packages
 
 setup(
-    version="0.0.7",
+    version="0.0.15",
     packages=find_packages(),
     install_requires=[
-        "requests",
-        "pendulum",
-        "retrying",
-        "notion-client",
-        "github-heatmap",
-        "python-dotenv",
+        "requests==2.32.5",
+        "pendulum==3.1.0",
+        "retrying==1.4.2",
+        "notion-client==2.5.0",
+        "github-heatmap==1.3.8",
+        "python-dotenv==1.2.1",
     ],
     entry_points={
         "console_scripts": [
