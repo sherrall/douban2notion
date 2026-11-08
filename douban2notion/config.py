@@ -37,7 +37,7 @@ movie_properties_type_dict = {
     # "ISBN":RICH_TEXT,
     # "链接":URL,
     "导演":RELATION,
-    "演员":MULTI_SELECT,
+    "演员":RELATION,
     # "Sort":NUMBER,
     "封面":FILES,
     "分类":RELATION,

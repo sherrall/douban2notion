@@ -32,6 +32,7 @@ class NotionHelper:
         "YEAR_DATABASE_NAME": "年",
         "CATEGORY_DATABASE_NAME": "分类",
         "DIRECTOR_DATABASE_NAME": "导演",
+        "ACTOR_DATABASE_NAME": "演员",
         "AUTHOR_DATABASE_NAME": "作者",
     }
     database_id_dict = {}
@@ -75,6 +76,9 @@ class NotionHelper:
         )
         self.director_database_id = self.database_id_dict.get(
             self.database_name_dict.get("DIRECTOR_DATABASE_NAME")
+        )
+        self.actor_database_id = self.database_id_dict.get(
+            self.database_name_dict.get("ACTOR_DATABASE_NAME")
         )
         self.author_database_id = self.database_id_dict.get(
             self.database_name_dict.get("AUTHOR_DATABASE_NAME")
@@ -172,8 +176,10 @@ class NotionHelper:
             day, self.day_database_id, TARGET_ICON_URL, properties
         )
     
-    @retry(stop_max_attempt_number=3, wait_fixed=5000)
+    @retry(stop_max_attempt_number=8, wait_exponential_multiplier=2000, wait_exponential_max=60000)
     def get_relation_id(self, name, id, icon, properties={}):
+        if not id:
+            return None
         key = f"{id}{name}"
         if key in self.__cache:
             return self.__cache.get(key)
@@ -196,13 +202,13 @@ class NotionHelper:
     def update_book_page(self, page_id, properties):
         return self.client.pages.update(page_id=page_id, properties=properties)
 
-    @retry(stop_max_attempt_number=3, wait_fixed=5000)
+    @retry(stop_max_attempt_number=8, wait_exponential_multiplier=2000, wait_exponential_max=60000)
     def update_page(self, page_id, properties):
         return self.client.pages.update(
             page_id=page_id, properties=properties
         )
 
-    @retry(stop_max_attempt_number=3, wait_fixed=5000)
+    @retry(stop_max_attempt_number=8, wait_exponential_multiplier=2000, wait_exponential_max=60000)
     def create_page(self, parent, properties, icon):
         return self.client.pages.create(parent=parent, properties=properties, icon=icon)
 
@@ -248,7 +254,7 @@ class NotionHelper:
             results.extend(response.get("results"))
         return results
 
-    @retry(stop_max_attempt_number=3, wait_fixed=5000)
+    @retry(stop_max_attempt_number=8, wait_exponential_multiplier=2000, wait_exponential_max=60000)
     def query_all(self, database_id):
         """获取database中所有的数据"""
         results = []
